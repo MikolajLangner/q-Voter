@@ -8,7 +8,7 @@ app = dash(external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",
 
 start_N = 100
 start_network = random(start_N)
-start_opinion = [sum(start_network) / N^2]
+start_opinion = [sum(start_network) / start_N^2]
 
 figure_heatmap = (data = [(x = 1:start_N, y = 1:start_N,
                            z = [2start_network[row, :] .- 1 for row in 1:start_N],
@@ -78,5 +78,7 @@ callback!(
            opinion = opinion,)
 end
 
-port = parse(Int64, ENV["PORT"])
-run_server(app, "0.0.0.0", port)
+#port = parse(Int64, ENV["PORT"])
+#run_server(app, "0.0.0.0", port)
+
+run_server(app, debug=true)
