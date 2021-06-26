@@ -95,7 +95,7 @@ callback!(
            opinion = opinion,)
 end
 
-#port = parse(Int64, ENV["PORT"])
-#run_server(app, "0.0.0.0", port)
+port = parse(Int64, ENV["PORT"])
+run_server(app, "0.0.0.0", port)
 
-run_server(app, debug=true)
+#run_server(app, debug=true)
