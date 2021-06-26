@@ -11,7 +11,7 @@ pattern_mapping = Dict("random" => random,
                        "stripes" => stripes,
                        "ring" => ring)
 
-start_N = 100
+start_N = 10
 start_network = random(start_N)
 start_opinion = [sum(start_network) / start_N^2]
 
@@ -49,7 +49,7 @@ app.layout = html_div(id = "main") do
     ]),
     dcc_store(id = "data", data = (network = start_network[:, :],
                                     opinion = start_opinion[:],)),
-    dcc_interval(id = "step", interval = 300)
+    dcc_interval(id = "step", interval = 100)
 end
 
 
@@ -85,7 +85,7 @@ callback!(
     else
         independent = nonconformity == "independence"
         replacement = drawing == "with"
-        map(x -> change(network, q, Float64(p), f, independent, replacement), 1:N^2)
+        map(x -> change(network, q, Float64(p), f, independent, replacement), 1:N)
         step = step == nothing ? 1 : step
         opinion = vcat(data.opinion, sum(2network .- 1) / N^2)
     end

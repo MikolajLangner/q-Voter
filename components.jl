@@ -42,7 +42,7 @@ size_slider = dcc_slider(
         min=10,
         max=100,
         step=10,
-        value=100,
+        value=10,
         tooltip = (always_visible = true,),
         vertical = true,
         verticalHeight = 200
