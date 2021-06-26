@@ -85,7 +85,7 @@ callback!(
     else
         independent = nonconformity == "independence"
         replacement = drawing == "with"
-        map(x -> change(network, q, Float64(p), f, independent, replacement), 1:N)
+        map(x -> change(network, q, Float64(p), f, independent, replacement), 1:N^2)
         step = step == nothing ? 1 : step
         opinion = vcat(data.opinion, sum(2network .- 1) / N^2)
     end
