@@ -6,6 +6,12 @@ include("components.jl")
 app = dash(external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",
                                    "style.css"])
 
+pattern_mapping = Dict("random" => random,
+                       "circular" => circular,
+                       "chess" => chess,
+                       "stripes" => stripes,
+                       "ring" => ring)
+
 start_N = 10
 start_network = random(start_N)
 start_opinion = [sum(start_network) / start_N^2]
@@ -55,7 +61,7 @@ callback!(
 ) do step, set, start, nonconformity, drawing, pattern, N, q, p, f, data
     ids = [trigger.prop_id for trigger in callback_context().triggered]
     if "set.n_clicks" in ids
-        network = eval(Meta.parse(pattern))
+        network = pattern_mapping[pattern](N)
         opinion = [sum(2network .- 1) / N^2]
         return ((z = [[2network[row, :] .- 1 for row in 1:N]],), 0, N),
                ((x = [[0]], y = [[opinion]],), 0, 1),

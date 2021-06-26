@@ -27,13 +27,13 @@ drawing_dropdown = dcc_dropdown(
 pattern_dropdown = dcc_dropdown(
     id = "pattern",
     options = [
-        (label = "Random", value = "random(N)"),
-        (label = "Circle", value = "circular(N)"),
-        (label = "Chessboard", value = "chess(N)"),
-        (label = "Stripes", value = "stripes(N)"),
-        (label = "Ring", value = "ring(N)")
+        (label = "Random", value = "random"),
+        (label = "Circle", value = "circular"),
+        (label = "Chessboard", value = "chess"),
+        (label = "Stripes", value = "stripes"),
+        (label = "Ring", value = "ring")
     ],
-    value = "random(N)",
+    value = "random",
 )
 
 
