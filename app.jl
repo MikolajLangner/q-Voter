@@ -32,7 +32,7 @@ app.layout = html_div() do
     f_slider,
     dcc_store(id = "data", data = (network = start_network[:, :],
                                     opinion = start_opinion[:],)),
-    dcc_interval(id = "step", interval = 100)
+    dcc_interval(id = "step", interval = 1000)
 end
 
 
@@ -78,7 +78,7 @@ callback!(
            opinion = opinion,)
 end
 
-port = parse(Int64, ENV["PORT"])
-run_server(app, "0.0.0.0", port)
+#port = parse(Int64, ENV["PORT"])
+#run_server(app, "0.0.0.0", port)
 
-#run_server(app, debug=true)
+run_server(app, debug=true)
