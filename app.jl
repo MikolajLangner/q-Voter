@@ -3,8 +3,7 @@ include("simulations.jl")
 include("components.jl")
 
 
-app = dash(external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",
-                                   "style.css"])
+app = dash(external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"])
 
 pattern_mapping = Dict("random" => random,
                        "circular" => circular,
@@ -24,18 +23,30 @@ figure_time = (data = [(x = [0], y = [start_opinion])],
                layout = (yaxis = (range = [-1, 1],),))
 
 
-app.layout = html_div() do
-    dcc_graph(id = "state", figure = figure_heatmap),
-    dcc_graph(id = "time", figure = figure_time),
-    start,
-    set,
-    nonconformity_dropdown,
-    drawing_dropdown,
-    pattern_dropdown,
-    size_slider,
-    q_slider,
-    p_slider,
-    f_slider,
+app.layout = html_div(id = "main") do
+    html_div(id = "heatmap", children = [
+        dcc_graph(id = "state", style=Dict("width" => "95vh", "height" => "95vh"), figure = figure_heatmap)
+    ]),
+    html_div(id = "settings", children = [
+        html_div(id = "buttons", children = [
+            start,
+            set
+        ]),
+        html_div(id = "dropdowns", children = [
+            pattern_dropdown,
+            nonconformity_dropdown,
+            drawing_dropdown
+        ]),
+        html_div(id = "sliders", children = [
+            size_slider,
+            q_slider,
+            p_slider,
+            f_slider
+        ])
+    ]),
+    html_div(id = "lineplot", children = [
+        dcc_graph(id = "time", style=Dict("width" => "100vh", "height" => "50vh"), figure = figure_time)
+    ]),
     dcc_store(id = "data", data = (network = start_network[:, :],
                                     opinion = start_opinion[:],)),
     dcc_interval(id = "step", interval = 1000)

@@ -45,7 +45,7 @@ size_slider = dcc_slider(
         value=10,
         tooltip = (always_visible = true,),
         vertical = true,
-        verticalHeight = 20
+        verticalHeight = 200
     )
 
 q_slider = dcc_slider(
@@ -56,7 +56,7 @@ q_slider = dcc_slider(
     value=3,
     tooltip = (always_visible = true,),
     vertical = true,
-    verticalHeight = 20
+    verticalHeight = 200
 )
 
 p_slider = dcc_slider(
@@ -67,7 +67,7 @@ p_slider = dcc_slider(
         value=.1,
         tooltip = (always_visible = true,),
         vertical = true,
-        verticalHeight = 100
+        verticalHeight = 200
     )
 
 f_slider = dcc_slider(
@@ -78,7 +78,7 @@ f_slider = dcc_slider(
         value=.1,
         tooltip = (always_visible = true,),
         vertical = true,
-        verticalHeight = 20
+        verticalHeight = 200
     )
 
 start = html_button(
