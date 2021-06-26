@@ -6,7 +6,7 @@ include("components.jl")
 app = dash(external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",
                                    "style.css"])
 
-start_N = 100
+start_N = 10
 start_network = random(start_N)
 start_opinion = [sum(start_network) / start_N^2]
 
