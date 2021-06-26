@@ -3,25 +3,18 @@ include("simulations.jl")
 include("components.jl")
 
 
-app = dash()
+app = dash(external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css",
+                                   "style.css"])
 
-using Random
-N = 100
-network = chess(N)
-q = 3
-p = .01
-f = rand()
-independent = false
-replaced = false
+start_N = 100
+start_network = random(start_N)
+start_opinion = [sum(start_network) / N^2]
 
-max_step = 10^3
-opinions = [sum(2network .- 1) / N^2]
-
-figure_heatmap = (data = [(x = 1:N, y = 1:N,
-                           z = [2network[row, :] .- 1 for row in 1:N],
+figure_heatmap = (data = [(x = 1:start_N, y = 1:start_N,
+                           z = [2start_network[row, :] .- 1 for row in 1:start_N],
                            type = "heatmap")],
                   layout = (yaxis = (scaleanchor = 'x',),),)
-figure_time = (data = [(x = [0], y = [opinions])],
+figure_time = (data = [(x = [0], y = [start_opinion])],
                layout = (yaxis = (range = [-1, 1],),))
 
 
@@ -32,12 +25,13 @@ app.layout = html_div() do
     set,
     nonconformity_dropdown,
     drawing_dropdown,
+    pattern_dropdown,
     size_slider,
     q_slider,
     p_slider,
     f_slider,
-    dcc_store(id = "data", data = (network = network[:, :],
-                                    opinion = opinions[:],)),
+    dcc_store(id = "data", data = (network = start_network[:, :],
+                                    opinion = start_opinion[:],)),
     dcc_interval(id = "step", interval = 100)
 end
 
@@ -52,22 +46,23 @@ callback!(
     State("start", "n_clicks"),
     State("nonconformity", "value"),
     State("drawing", "value"),
+    State("pattern", "value"),
     State("size", "value"),
     State("q", "value"),
     State("p", "value"),
     State("f", "value"),
     State("data", "data")
-) do step, set, start, nonconformity, drawing, N, q, p, f, data
+) do step, set, start, nonconformity, drawing, pattern, N, q, p, f, data
     ids = [trigger.prop_id for trigger in callback_context().triggered]
     if "set.n_clicks" in ids
-        network = chess(N)
+        network = eval(Meta.parse(pattern))
         opinion = [sum(2network .- 1) / N^2]
         return ((z = [[2network[row, :] .- 1 for row in 1:N]],), 0, N),
-               ((x = [[0]], y = [[opinion]],), 0, step + 1),
+               ((x = [[0]], y = [[opinion]],), 0, 1),
                (network = network,
                opinion = opinion,)
     end
-    network = Array{Int, 2}(reshape(data.network, Int(sqrt(length(data.network))), :))
+    network = Array{Int, 2}(reshape(data.network, N, :))
     if mod(start, 2) == 0
         opinion = data.opinion
     else
@@ -83,4 +78,5 @@ callback!(
            opinion = opinion,)
 end
 
-run_server(app, debug=true)
+port = parse(Int64, ENV["PORT"])
+run_server(app, "0.0.0.0", port)

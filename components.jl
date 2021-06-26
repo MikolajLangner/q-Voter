@@ -1,6 +1,6 @@
 using DashCoreComponents, DashHtmlComponents
 
-export nonconformity_dropdown, drawing_dropdown,
+export nonconformity_dropdown, drawing_dropdown, pattern_dropdown,
        size_slider, q_slider, p_slider, f_slider,
        start, set
 
@@ -23,11 +23,25 @@ drawing_dropdown = dcc_dropdown(
         value = "without",
     )
 
+
+pattern_dropdown = dcc_dropdown(
+    id = "pattern",
+    options = [
+        (label = "Random", value = "random(N)"),
+        (label = "Circle", value = "circular(N)"),
+        (label = "Chessboard", value = "chess(N)"),
+        (label = "Stripes", value = "stripes(N)"),
+        (label = "Ring", value = "ring(N)")
+    ],
+    value = "random(N)",
+)
+
+
 size_slider = dcc_slider(
         id = "size",
         min=10,
         max=100,
-        step=1,
+        step=10,
         value=100,
         tooltip = (always_visible = true,),
         vertical = true,
@@ -53,7 +67,7 @@ p_slider = dcc_slider(
         value=.1,
         tooltip = (always_visible = true,),
         vertical = true,
-        verticalHeight = 20
+        verticalHeight = 100
     )
 
 f_slider = dcc_slider(

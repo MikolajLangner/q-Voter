@@ -1,8 +1,7 @@
-using StatsBase
-export change, circlular, chess
+using StatsBase, Random
+export change, random, circlular, chess, stripes, ring
 
 
-const ϵ = .1
 moves = [[i j] for i in -1:1 for j in -1:1]
 splice!(moves, 5)
 
@@ -49,10 +48,20 @@ function change(network::AbstractArray, q::Int, p::Float64, f::Float64,
 end
 
 
-circular(N::Int) = Array{Int, 2}([(x - N / 2)^2 + (y - N / 2)^2
+random(N::Int) = Array{Int, 2}(bitrand(N, N))
+
+
+circular(N::Int) = Array{Int, 2}([(x - (N + 1) / 2)^2 + (y - (N + 1) / 2)^2
                          for x in 1:N, y in 1:N] .<= N^2 / 2pi)
 
 
-chess(N::Int) =  Array{Int, 2}(repeat([ones(5, 5) zeros(5, 5);
+chess(N::Int) = Array{Int, 2}(repeat([ones(5, 5) zeros(5, 5);
                                        zeros(5, 5) ones(5, 5)],
                                       Int(N / 10), Int(N / 10)))
+
+
+stripes(N::Int) = Array{Int, 2}([(x+y) % N / 2 < N / 4 for x in 1:N, y in 1:N])
+
+
+ring(N::Int) = Array{Int, 2}(N^2/4 * (1 - 2/pi) .<= [(x - (N + 1) / 2)^2 + (y - (N + 1) / 2)^2
+                         for x in 1:N, y in 1:N] .<= N^2 / 4)
