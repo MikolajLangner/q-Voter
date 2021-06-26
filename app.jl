@@ -11,7 +11,7 @@ pattern_mapping = Dict("random" => random,
                        "stripes" => stripes,
                        "ring" => ring)
 
-start_N = 10
+start_N = 100
 start_network = random(start_N)
 start_opinion = [sum(start_network) / start_N^2]
 
@@ -49,7 +49,7 @@ app.layout = html_div(id = "main") do
     ]),
     dcc_store(id = "data", data = (network = start_network[:, :],
                                     opinion = start_opinion[:],)),
-    dcc_interval(id = "step", interval = 1000)
+    dcc_interval(id = "step", interval = 500)
 end
 
 
@@ -95,7 +95,7 @@ callback!(
            opinion = opinion,)
 end
 
-port = parse(Int64, ENV["PORT"])
-run_server(app, "0.0.0.0", port)
+#port = parse(Int64, ENV["PORT"])
+#run_server(app, "0.0.0.0", port)
 
-#run_server(app, debug=true)
+run_server(app, debug=true)
