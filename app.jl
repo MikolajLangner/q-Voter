@@ -49,7 +49,7 @@ app.layout = html_div(id = "main") do
     ]),
     dcc_store(id = "data", data = (network = start_network[:, :],
                                     opinion = start_opinion[:],)),
-    dcc_interval(id = "step", interval = 300)
+    dcc_interval(id = "step", interval = 500)
 end
 
 
