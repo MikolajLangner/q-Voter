@@ -11,16 +11,18 @@ pattern_mapping = Dict("random" => random,
                        "stripes" => stripes,
                        "ring" => ring)
 
-start_N = 10
+start_N = 100
 start_network = random(start_N)
 start_opinion = [sum(start_network) / start_N^2]
 
 figure_heatmap = (data = [(x = 1:start_N, y = 1:start_N,
                            z = [2start_network[row, :] .- 1 for row in 1:start_N],
                            type = "heatmap")],
-                  layout = (yaxis = (scaleanchor = 'x',),),)
+                  layout = (xaxis = (ticks = "", showticklabels = false),
+                            yaxis = (scaleanchor = 'x',  ticks = "", showticklabels = false),),)
 figure_time = (data = [(x = [0], y = [start_opinion])],
-               layout = (yaxis = (range = [-1, 1],),))
+               layout = (yaxis = (title = "Average", range = [-1, 1],),
+                         xaxis = (title = "MCS [N^2]",)))
 
 
 app.layout = html_div(id = "main") do
@@ -38,14 +40,19 @@ app.layout = html_div(id = "main") do
             drawing_dropdown
         ]),
         html_div(id = "sliders", children = [
+            html_h6("N"),
             size_slider,
+            html_h6("q"),
             q_slider,
+            html_h6("p"),
             p_slider,
+            html_h6("f"),
             f_slider
         ])
     ]),
     html_div(id = "lineplot", children = [
-        dcc_graph(id = "time", style=Dict("width" => "100vh", "height" => "50vh"), figure = figure_time)
+        dcc_graph(id = "time", style=Dict("width" => "100vh", "height" => "50vh"),
+                  figure = figure_time)
     ]),
     dcc_store(id = "data", data = (network = start_network[:, :],
                                     opinion = start_opinion[:],)),
