@@ -11,9 +11,12 @@ pattern_mapping = Dict("random" => random,
                        "stripes" => stripes,
                        "ring" => ring)
 
+heroku = true
+fps = 2
+
 start_N = 100
 start_network = random(start_N)
-start_opinion = [sum(start_network) / start_N^2]
+start_opinion = [sum(2start_network .- 1) / start_N^2]
 
 figure_heatmap = (data = [(x = 1:start_N, y = 1:start_N,
                            z = [2start_network[row, :] .- 1 for row in 1:start_N],
@@ -22,7 +25,7 @@ figure_heatmap = (data = [(x = 1:start_N, y = 1:start_N,
                             yaxis = (scaleanchor = 'x',  ticks = "", showticklabels = false),),)
 figure_time = (data = [(x = [0], y = [start_opinion])],
                layout = (yaxis = (title = "Average", range = [-1, 1],),
-                         xaxis = (title = "MCS [N^2]",)))
+                         xaxis = (title = "MCS",)))
 
 
 app.layout = html_div(id = "main") do
@@ -56,7 +59,7 @@ app.layout = html_div(id = "main") do
     ]),
     dcc_store(id = "data", data = (network = start_network[:, :],
                                     opinion = start_opinion[:],)),
-    dcc_interval(id = "step", interval = 500)
+    dcc_interval(id = "step", interval = Int(1000 / fps))
 end
 
 
@@ -97,12 +100,14 @@ callback!(
         opinion = vcat(data.opinion, sum(2network .- 1) / N^2)
     end
     return ((z = [[2network[row, :] .- 1 for row in 1:N]],), 0, N),
-           ((x = [0:length(opinion)-1], y = [opinion],), 0, length(opinion)),
+           ((x = [0:N^2:(length(opinion)-1)*N^2], y = [opinion],), 0, length(opinion)),
            (network = network,
            opinion = opinion,)
 end
 
-port = parse(Int64, ENV["PORT"])
-run_server(app, "0.0.0.0", port)
-
-#run_server(app, debug=true)
+if heroku
+    port = parse(Int64, ENV["PORT"])
+    run_server(app, "0.0.0.0", port)
+else
+    run_server(app, debug=true)
+end
