@@ -12,7 +12,7 @@ pattern_mapping = Dict("random" => random,
                        "ring" => ring)
 
 heroku = false
-fps = 10
+fps = 2
 
 start_N = 100
 start_network = random(start_N)
