@@ -14,7 +14,7 @@ pattern_mapping = Dict("random" => random,
 heroku = false
 fps = 2
 
-start_N = 100
+start_N = 10
 start_network = random(start_N)
 start_opinion = [sum(2start_network .- 1) / start_N^2]
 
