@@ -11,8 +11,8 @@ pattern_mapping = Dict("random" => random,
                        "stripes" => stripes,
                        "ring" => ring)
 
-heroku = true
-fps = 2
+heroku = false
+fps = 10
 
 start_N = 100
 start_network = random(start_N)
@@ -105,9 +105,8 @@ callback!(
            opinion = opinion,)
 end
 
-if heroku
-    port = parse(Int64, ENV["PORT"])
-    run_server(app, "0.0.0.0", port)
-else
-    run_server(app, debug=true)
-end
+port = parse(Int64, ENV["PORT"])
+run_server(app, "0.0.0.0", port)
+
+#run_server(app, debug=true)
+
